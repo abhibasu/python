@@ -1,4 +1,7 @@
 # ETL operations against MYSQL db using mypy library
+# Dependecies - mypy python library
+# The code shows how to deal with longblob column types in mysql, especially if you are planning 
+# to do a sqoop import of mysql tables to hive.
 # Abhi Basu 
 
 #!/usr/bin/python
@@ -8,18 +11,18 @@ import sys
 import pymysql.cursors
 
 # Connect to the database
-connection = pymysql.connect(host='10.4.2.3', user='root', passwd='P@ssw0rd', db='ucscdata', charset='utf8mb4',
+connection = pymysql.connect(host='<IP ADDRESS>', user='<USER>', passwd='<PASSWORD>', db='MYSQL <DB NAME>', charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
 try:
     with connection.cursor() as cursor:
-        sql = "use ucscdata"
+        sql = "use ucscdata"  -- change it to your db name
         cursor.execute(sql)
 
         sql = "SELECT distinct(TABLE_NAME) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = \'ucscdata\' AND DATA_TYPE = \'longblob\'"
         #print sql
         cursor.execute(sql)
-        #cursor.fetchone()
+
         resultTables = cursor.fetchall()
 
         for row in resultTables:
@@ -36,6 +39,9 @@ try:
             updateSql = ""
             dropcolumnSql = ""
 
+            #Goal here is to create a new TEXT column, convert contents of LONGBLOB column, save in new column
+            #and delete old column. Our intention was to import these mysql tables into Hive using Sqoop. Sqoop does 
+            #not like to process LONGBLOB column types.
             for row in resultColumns:
                 print " ------ " + row['COLUMN_NAME']
                 mycolumn = row['COLUMN_NAME']
@@ -48,20 +54,16 @@ try:
             dropcolumnSql  = dropcolumnSql[:-1]
 
             sqlstep1 =  " ------------" + "ALTER TABLE " + myTable + addcolumnSql
-            print sqlstep1
+            cursor.execute(sqlstep1)
             sqlstep2 = " ------------" + "UPDATE TABLE " + myTable + " SET " + updateSql
-            print sqlstep2
+            cursor.execute(sqlstep2)
             sqlstep3 =  " ------------" + "ALTER TABLE " + myTable + " " + dropcolumnSql
-            print sqlstep3
+            cursor.execute(sqlstep3)
 
             #Commit transactions
-            #connection.commit()
+            connection.commit()
 
 
-
-    # connection is not autocommit by default. So you must commit to save
-    # your changes.
-    #connection.commit()
 
 finally:
     connection.close()
