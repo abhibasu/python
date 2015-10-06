@@ -2,6 +2,7 @@
 # this code needs to be run to get the master list of tables to be moved to hive
 # in case of failure due to network connection loss, we need master list of tables
 # Dependecies - mypy python library
+# Run to generate list before mysql_sqoop_hive.py is executed.
 # Abhi Basu
 # 08/20/15
 
