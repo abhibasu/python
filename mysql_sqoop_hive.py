@@ -1,4 +1,4 @@
-# Run to import data from mysql to hive metastore using scoop
+# Run to import data from mysql db to hive metastore using scoop command
 # Abhi Basu
 # 08/24/15
 
@@ -7,8 +7,7 @@ import time;
 import subprocess
 
 
-
-#BEFORE THIS CODE IS RUN, RUN mysql_master_table_list.py TO GENERATE THE MASTER LIST THIS CODE USES.
+#BEFORE THIS CODE IS RUN, EXECUTE mysql_master_table_list.py TO GENERATE THE MASTER LIST THIS CODE USES.
 #IF FOR SOME REASON PART OF THE TABLES ARE EXPORTED BEFORE SOME CONNECTION ISSUE, MODIFY THE MASTER LIST TO
 #DELETE THE TABLES EXPORTED OVER FOR NEXT TIME RUN.
 
