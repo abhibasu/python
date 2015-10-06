@@ -1,5 +1,5 @@
 # ETL operations against MYSQL db using mypy library
-# Dependecies - mypy python library
+# Dependecies - mypy python library (https://github.com/PyMySQL/PyMySQL/releases)
 # The code shows how to deal with longblob column types in mysql, especially if you are planning 
 # to do a sqoop import of mysql tables to hive.
 # Abhi Basu 
