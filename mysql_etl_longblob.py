@@ -1,4 +1,4 @@
-# ETL operations against MYSQL db using pymysql library
+# ETL operations against MYSQL db using pymysql library (https://github.com/PyMySQL/PyMySQL/releases)
 # to convert any columns with longblob to text data type
 # so that Sqoop can be used (as next step) to import into Hive metastore.
 # Abhi Basu
